@@ -1,0 +1,72 @@
+/* ============================================================
+   NextBridge IT — design tokens
+   North star: "The Night Bridge" (see DESIGN.md)
+   ============================================================ */
+
+:root {
+  /* ---- Night ramp: violet-tinted near-black scene (hue 288) ---- */
+  --night-0: oklch(14% 0.012 288);   /* body scene              */
+  --night-1: oklch(17.5% 0.014 288); /* raised level            */
+  --night-2: oklch(21% 0.016 288);   /* highest level           */
+  --line:    oklch(30% 0.018 288);   /* hairline structure      */
+  --line-strong: oklch(40% 0.02 288);
+  --line-lit: oklch(48% 0.035 288);  /* brightest structure — lit routes */
+
+  /* ---- Ink ---- */
+  --ink:   oklch(95% 0.008 288);
+  --ink-2: oklch(76% 0.014 288);     /* secondary text, ≥7:1 on night-0 */
+
+  /* ---- Signal Mint: the one voice (The One Signal Rule) ---- */
+  --mint:        oklch(83% 0.16 163);  /* ≈ #2EE6A6 identity anchor */
+  --mint-bright: oklch(88% 0.15 163);  /* hover on solid mint controls */
+  --mint-deep:   oklch(70% 0.14 163);  /* hover on light-on-dark controls */
+  --mint-dim:    oklch(83% 0.16 163 / 0.35);
+
+  /* ---- Bridge Violet: atmosphere only (The Atmosphere Rule) ---- */
+  --violet: oklch(62% 0.2 288);      /* ≈ #7C5CFF identity anchor */
+  --violet-glow: oklch(45% 0.16 288 / 0.32);
+  --violet-faint: oklch(45% 0.14 288 / 0.14);
+
+  /* ---- States ---- */
+  --error: oklch(72% 0.17 25);
+
+  /* ---- Type ---- */
+  --font-sans: 'Archivo Variable', 'Archivo-Fallback', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Mono', monospace;
+
+  --text-display: clamp(2.5rem, 1.1rem + 5.6vw, 5.4rem);
+  --text-h2:      clamp(1.9rem, 1.1rem + 2.9vw, 3.3rem);
+  --text-h3:      clamp(1.2rem, 1.05rem + 0.7vw, 1.55rem);
+  --text-lead:    clamp(1.08rem, 1rem + 0.45vw, 1.3rem);
+  --text-body:    1.0625rem;
+  --text-small:   0.9rem;
+  --text-mono:    0.8125rem;
+
+  /* ---- Spacing (4pt scale) ---- */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --section-pad: clamp(5.5rem, 4rem + 9vh, 10rem);
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --measure: 66ch;
+
+  /* ---- Motion ---- */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 160ms;
+  --dur-med:  280ms;
+  --dur-slow: 480ms;
+
+  /* ---- Z scale ---- */
+  --z-scene: 0;
+  --z-content: 1;
+  --z-nav: 10;
+  --z-menu: 20;
+  --z-toast: 30;
+}

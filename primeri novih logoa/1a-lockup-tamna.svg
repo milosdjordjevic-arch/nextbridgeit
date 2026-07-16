@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 64" fill="none">
+  
+  <defs><linearGradient id="g" x1="10" y1="20" x2="54" y2="46" gradientUnits="userSpaceOnUse"><stop stop-color="#7C5CFF"></stop><stop offset="1" stop-color="#2EE6A6"></stop></linearGradient><linearGradient id="gt" x1="218" y1="32" x2="262" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#7C5CFF"></stop><stop offset="1" stop-color="#2EE6A6"></stop></linearGradient></defs>
+  <path d="M10 42 C 20 21, 44 21, 54 42" stroke="url(#g)" stroke-width="7" stroke-linecap="round"></path>
+  <circle cx="10" cy="42" r="5.5" fill="#7C5CFF"></circle>
+  <circle cx="54" cy="42" r="5.5" fill="#2EE6A6"></circle>
+  <text x="70" y="42" font-family="&#39;Space Grotesk&#39;, sans-serif" font-size="26" font-weight="700" letter-spacing="-0.3" fill="#F2F4F9">NextBridge <tspan fill="url(#gt)">IT</tspan></text>
+</svg>

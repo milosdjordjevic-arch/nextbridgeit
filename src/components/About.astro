@@ -1,0 +1,163 @@
+---
+/* Belgrade → worldwide: light arcs leaving one point — the bridge, extended. */
+const ORIGIN = { x: 64, y: 252 };
+const routes = [
+  { d: `M ${ORIGIN.x} ${ORIGIN.y} C 200 60, 500 30, 676 64`, end: { x: 676, y: 64 } },
+  { d: `M ${ORIGIN.x} ${ORIGIN.y} C 220 90, 520 80, 692 124`, end: { x: 692, y: 124 } },
+  { d: `M ${ORIGIN.x} ${ORIGIN.y} C 230 120, 520 130, 684 186`, end: { x: 684, y: 186 } },
+  { d: `M ${ORIGIN.x} ${ORIGIN.y} C 240 160, 500 190, 648 240`, end: { x: 648, y: 240 } },
+  { d: `M ${ORIGIN.x} ${ORIGIN.y} C 220 200, 440 236, 560 272`, end: { x: 560, y: 272 } },
+];
+---
+
+<section class="section about" id="about">
+  <div class="wrap about-grid">
+    <div class="about-lede">
+      <p class="about-quote">
+        “We build relationships first —<br />software follows.”
+      </p>
+
+      <svg class="routes" viewBox="0 0 720 300" aria-hidden="true">
+        {routes.map((r) => <path class="route" d={r.d}></path>)}
+        {routes.map((r) => <circle class="route-end" cx={r.end.x} cy={r.end.y} r="3.5"></circle>)}
+        <circle class="route-origin" cx={ORIGIN.x} cy={ORIGIN.y} r="5.5"></circle>
+        <text class="route-label" x={ORIGIN.x - 14} y={ORIGIN.y + 28}>BEL</text>
+      </svg>
+
+      <p class="mono about-facts">
+        HQ Belgrade · Remote-first · CET ± your timezone
+      </p>
+    </div>
+
+    <div class="about-body">
+      <h2 class="about-title">Based in Belgrade.<br />Building worldwide.</h2>
+      <p>
+        NextBridge IT is an IT consulting and outsourcing partner focused on
+        dependable delivery systems: strong engineering, good process, and
+        accountable collaboration.
+      </p>
+      <p>
+        We're best suited for teams that value clarity, speed, and long-term
+        maintainability — and want a partner who treats their product as
+        their own.
+      </p>
+
+      <h3 class="expect-title">What you can expect</h3>
+      <ul class="expect">
+        <li>Senior-led engagement and onboarding</li>
+        <li>Documentation-first handover mindset</li>
+        <li>Security and reliability as defaults</li>
+        <li>Pragmatic architecture and testing</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: var(--s-8) clamp(var(--s-7), 7vw, var(--s-9));
+    align-items: start;
+  }
+
+  /* the quote leads; the heading enters lower, as the second beat */
+  @media (min-width: 861px) {
+    .about-body { padding-top: var(--s-9); }
+  }
+
+  .about-quote {
+    position: relative;
+    font-size: clamp(1.6rem, 1rem + 2.3vw, 2.7rem);
+    font-weight: 720;
+    font-variation-settings: 'wdth' 114;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    max-width: none;
+  }
+
+  .routes {
+    margin-top: var(--s-7);
+    width: min(100%, 34rem);
+  }
+
+  .route {
+    fill: none;
+    stroke: var(--line-lit);
+    stroke-width: 1.25;
+  }
+
+  .route-origin {
+    fill: var(--mint);
+    filter: drop-shadow(0 0 8px var(--mint-dim));
+  }
+
+  .route-end { fill: var(--mint-deep); }
+
+  .route-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 440;
+    letter-spacing: 0.08em;
+    fill: var(--ink-2);
+  }
+
+  .about-facts { margin-top: var(--s-5); }
+
+  .about-title { margin-bottom: var(--s-5); }
+
+  .about-body p + p { margin-top: var(--s-4); }
+
+  .about-body p { color: var(--ink-2); }
+
+  .expect-title {
+    margin-top: var(--s-7);
+    font-size: var(--text-small);
+    font-weight: 560;
+    letter-spacing: 0.02em;
+    color: var(--ink-2);
+  }
+
+  .expect {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--s-4);
+  }
+
+  .expect li {
+    position: relative;
+    padding: var(--s-3) 0 var(--s-3) var(--s-5);
+    border-top: 1px solid var(--line);
+    font-weight: 520;
+  }
+
+  .expect li:last-child { border-bottom: 1px solid var(--line); }
+
+  .expect li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    translate: 0 -50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--mint);
+  }
+
+  @media (max-width: 860px) {
+    .about-grid { grid-template-columns: 1fr; }
+
+    .about-lede { order: 2; }
+
+    .about-body { order: 1; }
+
+    .routes { margin-top: var(--s-6); }
+  }
+
+  /* keep the routes legible when the viewBox scales down */
+  @media (max-width: 640px) {
+    .route { stroke-width: 1.75; }
+  }
+</style>

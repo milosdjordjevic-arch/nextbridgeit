@@ -1,0 +1,212 @@
+---
+/* The load ledger — six services as open structural beams.
+   Everything visible at once: big names for the scan, detail for the read. */
+const services = [
+  {
+    id: 'ai-engineering',
+    name: 'AI Engineering',
+    outcome: 'AI that earns its place in production',
+    body: 'LLM features, agents, and intelligent automation built like real software — evaluated, secured, and shipped where they actually pay off.',
+    points: ['Custom LLM features and agents', 'RAG on your data + integrations', 'Evaluation, guardrails, cost control'],
+  },
+  {
+    id: 'dedicated-teams',
+    name: 'Dedicated Teams',
+    outcome: 'A stable team that feels like yours',
+    body: 'A senior-led team aligned with your product goals, culture, and delivery cadence — built to stay, not to rotate.',
+    points: ['Engineering + QA + delivery management', 'Stable staffing and knowledge retention', 'Transparent reporting, every sprint'],
+  },
+  {
+    id: 'staff-augmentation',
+    name: 'Staff Augmentation',
+    outcome: 'Senior specialists, productive fast',
+    body: 'Add rigorously screened specialists to your existing team — with onboarding support that makes week one count.',
+    points: ['Backend, frontend, full-stack', 'Cloud & DevOps engineers', 'QA & automation specialists'],
+  },
+  {
+    id: 'project-delivery',
+    name: 'Project Delivery',
+    outcome: 'Defined scope, delivered end-to-end',
+    body: 'Well-defined initiatives taken from scope to handover — MVPs, integrations, platform upgrades, modernization.',
+    points: ['Scope definition + milestones', 'Design, build, test, deploy', 'Documentation & clean handover'],
+  },
+  {
+    id: 'cloud-devops',
+    name: 'Cloud & DevOps',
+    outcome: 'Releases you stop worrying about',
+    body: 'Predictable releases and reliable infrastructure, engineered with security and cost in mind.',
+    points: ['CI/CD pipelines', 'Infrastructure as code + environments', 'Observability and incident readiness'],
+  },
+  {
+    id: 'product-engineering',
+    name: 'Product Engineering',
+    outcome: 'Ideas turned into systems that last',
+    body: 'Pragmatic engineering that turns ideas into maintainable software — and keeps it evolving after launch.',
+    points: ['MVP → scale path', 'Architecture reviews', 'Performance and reliability work'],
+  },
+];
+---
+
+<section class="section services" id="services">
+  <div class="wrap">
+    <div class="services-head">
+      <h2 class="services-title">Built to carry weight.</h2>
+      <p class="services-intro">
+        Six ways to engage — from a single senior specialist to a complete
+        product team. Every one senior-led, every one accountable.
+      </p>
+    </div>
+
+    <ul class="svc-list">
+      {services.map((s) => (
+        <li class="svc" id={s.id}>
+          <span class="svc-line" aria-hidden="true"></span>
+          <div class="svc-lede">
+            <h3 class="svc-name">{s.name}</h3>
+            <p class="svc-outcome">{s.outcome}</p>
+          </div>
+          <div class="svc-detail">
+            <p class="svc-body">{s.body}</p>
+            <ul class="svc-points">
+              {s.points.map((p) => <li>{p}</li>)}
+            </ul>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .services-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-5) var(--s-8);
+    margin-bottom: clamp(var(--s-8), 10vh, var(--s-9));
+  }
+
+  /* a full tier above the service names, so the head reads as the deck,
+     not as another beam */
+  .services-title {
+    font-size: clamp(2.2rem, 1.15rem + 3.7vw, 3.8rem);
+    font-variation-settings: 'wdth' 118;
+    letter-spacing: -0.024em;
+    line-height: 1.03;
+  }
+
+  .services-intro {
+    color: var(--ink-2);
+    max-width: 38ch;
+    margin-bottom: var(--s-2);
+  }
+
+  .svc-list {
+    list-style: none;
+    padding: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .svc {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--s-4) clamp(var(--s-6), 5vw, var(--s-9));
+    padding-block: clamp(var(--s-6), 4.5vh, var(--s-7));
+  }
+
+  /* the beam itself — drawn in by the scroll choreography */
+  .svc-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* the mint current that runs the beam on hover */
+  .svc::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent 0%, var(--mint) 45%, var(--mint) 55%, transparent 100%);
+    opacity: 0;
+    transform: translateX(-101%);
+    pointer-events: none;
+  }
+
+  .svc:hover::before {
+    animation: current 1100ms var(--ease-out-quint) forwards;
+  }
+
+  @keyframes current {
+    0%   { opacity: 1; transform: translateX(-101%); }
+    99%  { opacity: 1; }
+    100% { opacity: 0; transform: translateX(101%); }
+  }
+
+  .svc-name {
+    font-size: clamp(1.6rem, 1.05rem + 2.2vw, 2.6rem);
+    font-weight: 730;
+    font-variation-settings: 'wdth' 114;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+
+  .svc-outcome {
+    margin-top: var(--s-3);
+    font-size: var(--text-lead);
+    font-weight: 500;
+    color: var(--ink-2);
+    max-width: 30ch;
+    text-wrap: balance;
+  }
+
+  .svc-body {
+    color: var(--ink-2);
+    max-width: 52ch;
+  }
+
+  .svc-points {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--s-4);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-5);
+  }
+
+  .svc-points li {
+    position: relative;
+    padding-left: var(--s-4);
+    font-size: var(--text-small);
+    font-weight: 520;
+    color: var(--ink);
+  }
+
+  .svc-points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.52em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--mint);
+  }
+
+  @media (max-width: 860px) {
+    .svc {
+      grid-template-columns: 1fr;
+      gap: var(--s-4);
+    }
+
+    .svc-outcome { margin-top: var(--s-2); }
+  }
+</style>

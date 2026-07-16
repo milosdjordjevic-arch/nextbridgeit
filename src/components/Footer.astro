@@ -1,0 +1,149 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <a class="lockup" href="#top" aria-label="NextBridge IT — back to top">
+      <svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="nb-gf" x1="10" y1="20" x2="54" y2="46" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#7C5CFF"></stop>
+            <stop offset="1" stop-color="#2EE6A6"></stop>
+          </linearGradient>
+        </defs>
+        <path d="M10 42 C 20 21, 44 21, 54 42" stroke="url(#nb-gf)" stroke-width="7" stroke-linecap="round"></path>
+        <circle cx="10" cy="42" r="5.5" fill="#7C5CFF"></circle>
+        <circle cx="54" cy="42" r="5.5" fill="#2EE6A6"></circle>
+      </svg>
+      <span class="lockup-word">NextBridge&nbsp;IT</span>
+    </a>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="#services">Services</a>
+      <a href="#approach">Approach</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="footer-meta">
+      <div class="footer-contact">
+        <a href="mailto:contact@nextbridgeit.net">contact@nextbridgeit.net</a>
+        <a
+          class="footer-social"
+          href="https://www.linkedin.com/company/nextbridge-it/"
+          target="_blank"
+          rel="noopener"
+          aria-label="NextBridge IT on LinkedIn"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"></path>
+          </svg>
+        </a>
+      </div>
+      <span class="mono">Belgrade, Serbia</span>
+    </div>
+  </div>
+
+  <div class="wrap footer-legal mono">
+    <span>© {year} NextBridge IT</span>
+    <span>Between strategy and execution.</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--line);
+    padding-block: var(--s-7) var(--s-5);
+    background: var(--night-0);
+  }
+
+  .footer-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5) var(--s-7);
+  }
+
+  .lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    color: var(--ink);
+    padding-block: var(--s-2);
+    margin-block: calc(-1 * var(--s-2));
+  }
+
+  .lockup:hover { color: var(--ink); }
+
+  .lockup-word {
+    font-weight: 680;
+    font-size: 0.95rem;
+    font-variation-settings: 'wdth' 110;
+  }
+
+  .footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-5);
+  }
+
+  .footer-nav a {
+    color: var(--ink-2);
+    font-size: var(--text-small);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .footer-nav a:hover { color: var(--mint); }
+
+  .footer-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--s-1);
+  }
+
+  .footer-meta a {
+    font-weight: 560;
+    display: inline-flex;
+    align-items: center;
+    padding-block: var(--s-2);
+    margin-block: calc(-1 * var(--s-2));
+  }
+
+  .footer-contact {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .footer-social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    margin-block: -12px;
+    color: var(--ink-2);
+    transition: color var(--dur-fast) var(--ease-out-quint);
+  }
+
+  .footer-social:hover { color: var(--mint); }
+
+  .footer-legal {
+    margin-top: var(--s-6);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+
+  @media (max-width: 640px) {
+    .footer-meta { align-items: flex-start; }
+  }
+</style>

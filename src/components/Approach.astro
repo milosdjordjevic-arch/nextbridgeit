@@ -1,0 +1,333 @@
+---
+/* The Crossing — four stations on one winding span.
+   The S-path geometry is shared with motion.ts via data-stations. */
+const SX = [8, 92, 8, 92];           // station x, % of scene width
+const SY = [12.5, 37.5, 62.5, 87.5]; // station y, % of scene height (row centers)
+const W = 1000;
+const H = 800;
+const K = 160; // vertical pull of each bend — bigger = tighter hooks at stations
+
+const pts = SX.map((x, i) => ({ x: (x / 100) * W, y: (SY[i] / 100) * H }));
+const spanPath = pts.slice(1).reduce(
+  (acc, p, i) => `${acc} C ${pts[i].x} ${pts[i].y + K}, ${p.x} ${p.y - K}, ${p.x} ${p.y}`,
+  `M ${pts[0].x} ${pts[0].y}`
+);
+
+const steps = [
+  {
+    n: '01',
+    title: 'Discover',
+    body: 'We align on goals, constraints, success metrics, and the realities of your domain — before anyone writes a line of code.',
+  },
+  {
+    n: '02',
+    title: 'Match',
+    body: 'We propose the right engagement model and the right people. Senior-led, with ownership — not a bench cleared onto your project.',
+  },
+  {
+    n: '03',
+    title: 'Deliver',
+    body: 'Iterative delivery on a simple, visible workflow: planning, execution, QA, release. You always know where things stand.',
+  },
+  {
+    n: '04',
+    title: 'Improve',
+    body: 'We continuously refine quality, velocity, and cost — with honest trade-offs and real data, not status-meeting theatre.',
+  },
+];
+
+const practice = [
+  {
+    title: 'Proactive communication',
+    body: 'No surprises. Risks are surfaced early, with options already attached.',
+  },
+  {
+    title: 'Ownership',
+    body: 'We treat your product as ours: stable systems, clean handovers, sustainable code.',
+  },
+  {
+    title: 'Transparency',
+    body: 'Clear reporting, realistic timelines, and outcomes you can measure.',
+  },
+];
+---
+
+<section class="section approach" id="approach">
+  <div class="wrap">
+    <div class="approach-head">
+      <h2>How we cross from<br />strategy to shipped.</h2>
+      <p class="approach-intro">
+        We work like partners: clear expectations, frequent feedback,
+        measurable progress. Four stations, one crossing.
+      </p>
+    </div>
+
+    <div class="crossing">
+      <svg
+        class="crossing-scene"
+        viewBox={`0 0 ${W} ${H}`}
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        data-stations={JSON.stringify(pts)}
+      >
+        <path class="cross-base" d={spanPath}></path>
+        <path class="cross-draw" d={spanPath} data-cross-draw></path>
+      </svg>
+      <span class="cross-head" data-cross-head aria-hidden="true"></span>
+
+      <div class="rail" aria-hidden="true">
+        <div class="rail-fill" data-rail-fill></div>
+      </div>
+
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class={i % 2 ? 'step step-right' : 'step'} data-step style={`--sx: ${SX[i]}%`}>
+            <span class="station" aria-hidden="true"></span>
+            <div class="step-text">
+              <span class="step-n mono" aria-hidden="true">{s.n}</span>
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="practice">
+      <h3 class="practice-title">What “partner-oriented” means in practice</h3>
+      <div class="practice-grid">
+        {practice.map((p) => (
+          <div class="practice-item">
+            <strong>{p.title}</strong>
+            <p>{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .approach {
+    background: var(--night-1);
+    border-block: 1px solid var(--line);
+  }
+
+  .approach-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-5) var(--s-8);
+    margin-bottom: var(--s-9);
+  }
+
+  .approach-intro {
+    color: var(--ink-2);
+    max-width: 36ch;
+    margin-bottom: var(--s-2);
+  }
+
+  .crossing {
+    position: relative;
+  }
+
+  /* ---- The winding span (desktop) ---- */
+  .crossing-scene {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .cross-base {
+    fill: none;
+    stroke: var(--line-strong);
+    stroke-width: 1.25;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .cross-draw {
+    fill: none;
+    stroke: var(--mint);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+    filter: drop-shadow(0 0 7px var(--mint-dim));
+  }
+
+  /* the signal at the head of the drawn line — anchored top-left,
+     positioned via transform (compositor-only, no per-frame layout) */
+  .cross-head {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--mint);
+    translate: -50% -50%;
+    filter: drop-shadow(0 0 8px var(--mint)) drop-shadow(0 0 22px var(--mint-dim));
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .steps {
+    list-style: none;
+    padding: 0;
+    position: relative;
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    min-height: clamp(50rem, 118vh, 64rem);
+  }
+
+  .step {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .station {
+    position: absolute;
+    left: var(--sx);
+    top: 50%;
+    translate: -50% -50%;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line-strong);
+    background: var(--night-1);
+    z-index: 1;
+    transition: background var(--dur-med) var(--ease-out-quint),
+                border-color var(--dur-med) var(--ease-out-quint),
+                box-shadow var(--dur-med) var(--ease-out-quint);
+  }
+
+  .step.lit .station {
+    background: var(--mint);
+    border-color: var(--mint);
+    box-shadow: 0 0 14px var(--mint-dim);
+  }
+
+  /* a translucent pane: where the span passes behind text it stays
+     faintly visible, so the line never strikes the words nor breaks */
+  .step-text {
+    position: relative;
+    z-index: 1;
+    max-width: min(40ch, 44%);
+    margin-left: calc(var(--sx) + clamp(1.5rem, 2.5vw, 2.75rem));
+    background: color-mix(in oklab, var(--night-1) 90%, transparent);
+    padding: var(--s-3) var(--s-4);
+  }
+
+  .step-right {
+    justify-content: flex-end;
+  }
+
+  .step-right .step-text {
+    margin-left: 0;
+    margin-right: calc(100% - var(--sx) + clamp(1.5rem, 2.5vw, 2.75rem));
+  }
+
+  .step-n {
+    display: block;
+    font-size: 1rem;
+    color: var(--ink-2);
+    margin-bottom: var(--s-2);
+    transition: color var(--dur-med) var(--ease-out-quint);
+  }
+
+  .step.lit .step-n { color: var(--mint); }
+
+  .step-text p {
+    margin-top: var(--s-3);
+    color: var(--ink-2);
+  }
+
+  /* ---- The straight rail (mobile fallback) ---- */
+  .rail { display: none; }
+
+  .rail-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--mint);
+    transform-origin: top;
+    transform: scaleY(0);
+    box-shadow: 0 0 12px var(--mint-dim);
+  }
+
+  .practice {
+    margin-top: var(--s-9);
+  }
+
+  .practice-title {
+    font-size: var(--text-small);
+    font-weight: 560;
+    letter-spacing: 0.02em;
+    color: var(--ink-2);
+    text-transform: none;
+  }
+
+  .practice-grid {
+    margin-top: var(--s-5);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--s-6) var(--s-7);
+  }
+
+  .practice-item {
+    border-top: 1px solid var(--line-strong);
+    padding-top: var(--s-4);
+  }
+
+  .practice-item strong {
+    font-weight: 680;
+    letter-spacing: -0.01em;
+  }
+
+  .practice-item p {
+    margin-top: var(--s-2);
+    font-size: var(--text-small);
+    color: var(--ink-2);
+  }
+
+  @media (max-width: 860px) {
+    .crossing-scene,
+    .cross-head { display: none; }
+
+    .crossing { padding-left: clamp(1.75rem, 7vw, 2.5rem); }
+
+    .rail {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--line-strong);
+    }
+
+    .steps {
+      min-height: 0;
+      grid-template-rows: none;
+      gap: clamp(var(--s-7), 8vh, var(--s-8));
+    }
+
+    .step { display: block; }
+
+    .station {
+      left: calc(-1 * clamp(1.75rem, 7vw, 2.5rem));
+      top: 0.45em;
+      translate: -50% 0;
+    }
+
+    .step-text,
+    .step-right .step-text {
+      max-width: 52ch;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+    }
+  }
+</style>

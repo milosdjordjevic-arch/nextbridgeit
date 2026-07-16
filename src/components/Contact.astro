@@ -1,0 +1,351 @@
+---
+const EMAIL = 'contact@nextbridgeit.net';
+---
+
+<section class="section contact" id="contact">
+  <div class="wrap">
+    <div class="contact-head">
+      <h2>Tell us what you're building.</h2>
+      <p class="contact-lead">
+        We'll respond with a clear next step — usually within one business day.
+      </p>
+    </div>
+
+    <div class="contact-grid">
+      <form class="form" id="contact-form" novalidate>
+        <div class="field">
+          <label for="cf-name">Name</label>
+          <input id="cf-name" name="name" type="text" autocomplete="name" required />
+          <p class="field-error" id="cf-name-error" hidden>Please tell us your name.</p>
+        </div>
+
+        <div class="field">
+          <label for="cf-email">Work email</label>
+          <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" required />
+          <p class="field-error" id="cf-email-error" hidden>That email doesn't look complete — mind checking it?</p>
+        </div>
+
+        <div class="field">
+          <label for="cf-msg">What are you building?</label>
+          <textarea
+            id="cf-msg"
+            name="message"
+            rows="5"
+            required
+            placeholder="Team augmentation, a delivery deadline, a system that needs rescuing…"></textarea>
+          <p class="field-error" id="cf-msg-error" hidden>A sentence or two is enough to get us started.</p>
+        </div>
+
+        <!-- honeypot: invisible to people, irresistible to bots -->
+        <input
+          type="checkbox"
+          name="botcheck"
+          id="cf-check"
+          class="botcheck"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+        />
+
+        <button class="btn form-submit" type="submit">
+          <span class="submit-label">Send</span>
+        </button>
+        <p class="form-note mono" id="form-note" hidden></p>
+      </form>
+
+      <div class="form-success" id="form-success" hidden tabindex="-1">
+        <p class="mono success-kicker">Signal received</p>
+        <h3>We'll come back with a clear next step.</h3>
+        <p class="success-body">
+          Usually within one business day. If it's urgent, write to us directly
+          at <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.
+        </p>
+      </div>
+
+      <aside class="direct">
+        <h3 class="direct-title mono">Direct</h3>
+        <a class="direct-mail" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+        <dl class="direct-facts">
+          <div>
+            <dt class="mono">Location</dt>
+            <dd>Belgrade, Serbia — working worldwide</dd>
+          </div>
+          <div>
+            <dt class="mono">Response</dt>
+            <dd>Within one business day</dd>
+          </div>
+          <div>
+            <dt class="mono">Fits best</dt>
+            <dd>Teams that value clarity, speed, and long-term maintainability</dd>
+          </div>
+        </dl>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* the only other unmarked seam on the page gets its cue */
+  .contact { border-top: 1px solid var(--line); }
+
+  .contact-head { margin-bottom: var(--s-8); }
+
+  .contact-lead {
+    margin-top: var(--s-4);
+    color: var(--ink-2);
+    font-size: var(--text-lead);
+  }
+
+  .contact-grid {<
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    gap: var(--s-8) clamp(var(--s-7), 7vw, var(--s-9));
+    align-items: start;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-6);
+  }
+
+  .field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .field label {
+    font-size: var(--text-small);
+    font-weight: 600;
+  }
+
+  .field input,
+  .field textarea {
+    font: inherit;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line-strong);
+    padding: var(--s-3) var(--s-1);
+    border-radius: 0;
+    resize: vertical;
+  }
+
+  .field textarea { min-height: 8rem; }
+
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: var(--ink-2);
+    opacity: 1;
+  }
+
+  /* the circuit: closes on focus */
+  .field::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 1.5px;
+    width: 100%;
+    background: var(--mint);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-slow) var(--ease-out-expo);
+    pointer-events: none;
+  }
+
+  .field:focus-within::after { transform: scaleX(1); }
+
+  /* an invalid circuit carries the error current, not the signal */
+  .field[data-invalid]::after { background: var(--error); }
+
+  .field input:focus-visible,
+  .field textarea:focus-visible {
+    outline: none;
+  }
+
+  .field[data-invalid] input,
+  .field[data-invalid] textarea {
+    border-bottom-color: var(--error);
+  }
+
+  .field-error {
+    font-size: var(--text-small);
+    color: var(--error);
+  }
+
+  .botcheck { display: none; }
+
+  .form-submit {
+    align-self: flex-start;
+    min-width: 11rem;
+    justify-content: center;
+    margin-top: var(--s-2);
+  }
+
+  .form-submit[disabled] {
+    opacity: 0.65;
+    cursor: progress;
+    transform: none;
+  }
+
+  .form-note { text-transform: none; letter-spacing: 0.02em; }
+
+  .form-success {
+    border: 1px solid var(--line-strong);
+    padding: var(--s-7);
+    background: var(--night-1);
+  }
+
+  .success-kicker {
+    color: var(--mint);
+    margin-bottom: var(--s-4);
+  }
+
+  .success-body {
+    margin-top: var(--s-4);
+    color: var(--ink-2);
+  }
+
+  .direct-title { margin-bottom: var(--s-4); }
+
+  .direct-mail {
+    display: inline-block;
+    font-size: clamp(1.15rem, 1rem + 1vw, 1.5rem);
+    font-weight: 660;
+    letter-spacing: -0.01em;
+    word-break: break-all;
+    /* widen the hit area without moving the layout */
+    padding-block: var(--s-3);
+    margin-block: calc(-1 * var(--s-3));
+  }
+
+  .direct-facts {
+    margin-top: var(--s-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .direct-facts div {
+    border-top: 1px solid var(--line);
+    padding-top: var(--s-3);
+  }
+
+  .direct-facts div:last-child {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: var(--s-3);
+  }
+
+  .direct-facts dd {
+    margin: var(--s-1) 0 0;
+    color: var(--ink-2);
+  }
+
+  @media (max-width: 860px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  /* Web3Forms access key — create one for contact@nextbridgeit.net at
+     https://web3forms.com (the key is public by design; it only routes
+     messages to that inbox). Until it's set, submit falls back to opening
+     the visitor's email app. */
+  const WEB3FORMS_ACCESS_KEY = '2d7fee34-14bd-4ecb-8939-028b4cfb2105';
+  const EMAIL = 'contact@nextbridgeit.net';
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+
+  if (form) {
+    const successPanel = document.getElementById('form-success')!;
+    const note = document.getElementById('form-note')!;
+    const submitBtn = form.querySelector('.form-submit') as HTMLButtonElement;
+    const label = form.querySelector('.submit-label')!;
+
+    const fields = [
+      { input: form.querySelector('#cf-name') as HTMLInputElement, check: (v: string) => v.trim().length > 0 },
+      { input: form.querySelector('#cf-email') as HTMLInputElement, check: (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) },
+      { input: form.querySelector('#cf-msg') as HTMLTextAreaElement, check: (v: string) => v.trim().length > 3 },
+    ];
+
+    const setValidity = (f: (typeof fields)[number], valid: boolean) => {
+      const wrap = f.input.closest('.field')!;
+      const error = wrap.querySelector('.field-error') as HTMLElement;
+      wrap.toggleAttribute('data-invalid', !valid);
+      error.hidden = valid;
+      f.input.setAttribute('aria-invalid', String(!valid));
+      if (!valid) f.input.setAttribute('aria-describedby', error.id);
+      else f.input.removeAttribute('aria-describedby');
+    };
+
+    fields.forEach((f) => {
+      f.input.addEventListener('blur', () => {
+        if (f.input.value.trim() !== '') setValidity(f, f.check(f.input.value));
+      });
+      f.input.addEventListener('input', () => {
+        if (f.input.closest('.field')!.hasAttribute('data-invalid')) {
+          setValidity(f, f.check(f.input.value));
+        }
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      let allValid = true;
+      fields.forEach((f) => {
+        const valid = f.check(f.input.value);
+        setValidity(f, valid);
+        if (!valid) allValid = false;
+      });
+      if (!allValid) {
+        (form.querySelector('[data-invalid] input, [data-invalid] textarea') as HTMLElement)?.focus();
+        return;
+      }
+
+      const data = {
+        name: fields[0].input.value.trim(),
+        email: fields[1].input.value.trim(),
+        message: fields[2].input.value.trim(),
+      };
+
+      if (!WEB3FORMS_ACCESS_KEY) {
+        const body = encodeURIComponent(`${data.message}\n\n— ${data.name} (${data.email})`);
+        window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent('Project inquiry — ' + data.name)}&body=${body}`;
+        note.hidden = false;
+        note.textContent = 'Opening your email app… If nothing happens, write to ' + EMAIL;
+        return;
+      }
+
+      submitBtn.disabled = true;
+      label.textContent = 'Sending…';
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_ACCESS_KEY,
+            subject: `Project inquiry — ${data.name}`,
+            from_name: 'nextbridgeit.net — contact form',
+            botcheck: (document.getElementById('cf-check') as HTMLInputElement).checked,
+            ...data,
+          }),
+        });
+        const result = await res.json().catch(() => null);
+        if (!res.ok || !result?.success) throw new Error(String(res.status));
+        form.hidden = true;
+        successPanel.hidden = false;
+        successPanel.focus();
+      } catch {
+        note.hidden = false;
+        note.textContent = 'Sending failed — please email us directly at ' + EMAIL;
+        submitBtn.disabled = false;
+        label.textContent = 'Send';
+      }
+    });
+  }
+</script>

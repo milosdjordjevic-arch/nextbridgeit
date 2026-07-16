@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 76" fill="none">
+  
+  <defs><linearGradient id="gb" x1="78" y1="40" x2="214" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#7C5CFF"></stop><stop offset="1" stop-color="#2EE6A6"></stop></linearGradient><linearGradient id="gu" x1="66" y1="66" x2="162" y2="66" gradientUnits="userSpaceOnUse"><stop stop-color="#7C5CFF"></stop><stop offset="1" stop-color="#2EE6A6"></stop></linearGradient></defs>
+  <text x="10" y="42" font-family="&#39;Space Grotesk&#39;, sans-serif" font-size="34" font-weight="700" letter-spacing="-0.7" fill="#F2F4F9">next<tspan fill="url(#gb)">bridge</tspan></text>
+  <path d="M66 64 C 90 52, 138 52, 162 64" stroke="url(#gu)" stroke-width="4" stroke-linecap="round"></path>
+</svg>

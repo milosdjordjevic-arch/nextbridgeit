@@ -1,0 +1,247 @@
+---
+/* The Span — hero scene geometry.
+   Arch is a cubic bezier; hangers drop from arch to deck like a through-arch bridge. */
+const P0 = { x: 40, y: 560 };
+const P1 = { x: 400, y: 176 };
+const P2 = { x: 1040, y: 176 };
+const P3 = { x: 1400, y: 560 };
+const DECK_Y = 560;
+
+const bezier = (t: number) => {
+  const u = 1 - t;
+  return {
+    x: u * u * u * P0.x + 3 * u * u * t * P1.x + 3 * u * t * t * P2.x + t * t * t * P3.x,
+    y: u * u * u * P0.y + 3 * u * u * t * P1.y + 3 * u * t * t * P2.y + t * t * t * P3.y,
+  };
+};
+
+const HANGERS = 15;
+const hangers = Array.from({ length: HANGERS }, (_, i) => {
+  const t = 0.06 + (i / (HANGERS - 1)) * 0.88;
+  const p = bezier(t);
+  return { x: Math.round(p.x * 10) / 10, y: Math.round(p.y * 10) / 10 };
+});
+
+const archPath = `M ${P0.x} ${P0.y} C ${P1.x} ${P1.y}, ${P2.x} ${P2.y}, ${P3.x} ${P3.y}`;
+---
+
+<section class="hero" id="top">
+  <div class="hero-atmosphere" aria-hidden="true"></div>
+
+  <div class="wrap hero-content">
+    <h1 class="hero-title">
+      <span class="line"><span class="line-inner">Software teams you</span></span>
+      <span class="line"><span class="line-inner">can put weight on.</span></span>
+    </h1>
+    <p class="hero-lead">
+      NextBridge IT builds and scales senior-led software teams for companies
+      worldwide — engineering, delivery, and ownership you don't have to babysit.
+    </p>
+    <div class="hero-actions">
+      <a class="btn" href="#contact">Start a conversation</a>
+      <a class="btn-quiet" href="#approach">How we work</a>
+    </div>
+  </div>
+
+  <svg
+    class="hero-scene"
+    viewBox="0 0 1440 720"
+    preserveAspectRatio="xMidYMax slice"
+    aria-hidden="true"
+  >
+    <defs>
+      <linearGradient id="span-g" x1={P0.x} y1={DECK_Y} x2={P3.x} y2={DECK_Y} gradientUnits="userSpaceOnUse">
+        <stop stop-color="#7C5CFF"></stop>
+        <stop offset="1" stop-color="#2EE6A6"></stop>
+      </linearGradient>
+    </defs>
+
+    <!-- deck -->
+    <line class="deck" x1="0" y1={DECK_Y} x2="1440" y2={DECK_Y}></line>
+
+    <!-- hangers -->
+    <g class="hangers">
+      {hangers.map((h) => (
+        <line class="hanger" x1={h.x} y1={h.y} x2={h.x} y2={DECK_Y}></line>
+      ))}
+    </g>
+
+    <!-- arch: the one signature-gradient moment on this page -->
+    <path id="arch-path" class="arch" d={archPath}></path>
+
+    <circle class="foot foot-l" cx={P0.x} cy={DECK_Y} r="6"></circle>
+    <circle class="foot foot-r" cx={P3.x} cy={DECK_Y} r="6"></circle>
+
+    <!-- traveling signal (driven by GSAP) -->
+    <circle class="pulse" r="4.5"></circle>
+  </svg>
+
+  <div class="wrap hero-readout mono">
+    <span>BEL · 44.79° N / 20.45° E</span>
+    <span aria-live="off" id="hero-clock">Belgrade —:— CET</span>
+    <span class="readout-right">Global delivery</span>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: clip;
+  }
+
+  .hero-atmosphere {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-scene);
+    background:
+      radial-gradient(52% 38% at 50% 88%, var(--violet-glow), transparent 70%),
+      radial-gradient(30% 24% at 82% 6%, var(--violet-faint), transparent 70%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: var(--z-content);
+    padding-top: clamp(7rem, 16vh, 11rem);
+    padding-bottom: clamp(16rem, 34vh, 22rem);
+  }
+
+  /* The copy floats in front of the span. A night-colored halo occludes the
+     arch line where it passes close behind glyphs, so letters and structure
+     never visually collide — the line ducks into the dark behind the words. */
+  .hero-title,
+  .hero-lead,
+  .hero-actions :where(.btn-quiet) {
+    text-shadow:
+      0 1px 2px var(--night-0),
+      0 0 6px var(--night-0),
+      0 0 14px var(--night-0),
+      0 0 26px var(--night-0);
+  }
+
+  .hero-title .line {
+    display: block;
+    overflow: clip;
+  }
+
+  .line-inner { display: inline-block; }
+
+  .hero-lead {
+    margin-top: var(--s-5);
+    font-size: var(--text-lead);
+    color: var(--ink-2);
+    max-width: 44ch;
+  }
+
+  .hero-actions {
+    margin-top: var(--s-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-5);
+  }
+
+  .hero-scene {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: var(--z-scene);
+    width: 100%;
+    height: min(64vh, 46rem);
+    /* the box only anchors and scales the scene — never beheads it: parts
+       above the box (the arch crown on short viewports) stay visible, capped
+       so the reveal stops just under the nav on extreme letterbox windows */
+    overflow: visible;
+    clip-path: inset(calc(100% + 5.5rem - 100svh) 0 0 0);
+    pointer-events: none;
+  }
+
+  .deck {
+    stroke: var(--line);
+    stroke-width: 1.5;
+  }
+
+  .hanger {
+    stroke: var(--line);
+    stroke-width: 1;
+  }
+
+  .arch {
+    fill: none;
+    stroke: url(#span-g);
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+
+  .foot-l { fill: #7c5cff; }
+  .foot-r { fill: #2ee6a6; }
+
+  .pulse {
+    fill: var(--mint);
+    opacity: 0;
+    filter: drop-shadow(0 0 8px var(--mint)) drop-shadow(0 0 22px var(--mint-dim));
+  }
+
+  .hero-readout {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: var(--z-content);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding-block: var(--s-4);
+    border-top: 1px solid var(--line);
+  }
+
+  @media (max-width: 640px) {
+    .hero-content {
+      padding-top: clamp(6rem, 13vh, 9rem);
+      padding-bottom: clamp(16rem, 37vh, 19rem);
+    }
+
+    .hero-scene { height: 46vh; }
+
+    .readout-right { display: none; }
+  }
+
+  /* short desktop viewports (1366×768-class laptops): tighten the copy and
+     lower the span so the arch never strikes the words */
+  @media (min-width: 641px) and (max-height: 820px) {
+    .hero-content {
+      padding-top: clamp(5.5rem, 11vh, 7.5rem);
+      padding-bottom: clamp(17rem, 42vh, 20rem);
+    }
+
+    .hero-title { font-size: clamp(2.2rem, 0.9rem + 4.4vw, 4.3rem); }
+
+    .hero-lead {
+      font-size: 1.05rem;
+      max-width: 42ch;
+    }
+
+    .hero-scene { height: min(48vh, 24rem); }
+  }
+</style>
+
+<script>
+  const clock = document.getElementById('hero-clock');
+  if (clock) {
+    const fmt = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Belgrade',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZoneName: 'short',
+    });
+    const tick = () => {
+      const parts = fmt.formatToParts(new Date());
+      const get = (t: string) => parts.find((p) => p.type === t)?.value ?? '';
+      clock.textContent = `Belgrade ${get('hour')}:${get('minute')} ${get('timeZoneName')}`;
+    };
+    tick();
+    setInterval(tick, 30_000);
+  }
+</script>

@@ -1,0 +1,302 @@
+---
+const links = [
+  { href: '#services', label: 'Services' },
+  { href: '#approach', label: 'Approach' },
+  { href: '#about', label: 'About' },
+];
+---
+
+<header class="nav" id="site-nav">
+  <div class="wrap nav-row">
+    <a class="lockup" href="#top" aria-label="NextBridge IT — back to top">
+      <svg width="34" height="34" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="nb-g" x1="10" y1="20" x2="54" y2="46" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#7C5CFF"></stop>
+            <stop offset="1" stop-color="#2EE6A6"></stop>
+          </linearGradient>
+        </defs>
+        <path d="M10 42 C 20 21, 44 21, 54 42" stroke="url(#nb-g)" stroke-width="7" stroke-linecap="round"></path>
+        <circle cx="10" cy="42" r="5.5" fill="#7C5CFF"></circle>
+        <circle cx="54" cy="42" r="5.5" fill="#2EE6A6"></circle>
+      </svg>
+      <span class="lockup-word">NextBridge&nbsp;IT</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      {links.map((l) => <a class="nav-link" href={l.href}>{l.label}</a>)}
+    </nav>
+
+    <div class="nav-cta">
+      <a class="btn nav-btn" href="#contact">Start a conversation</a>
+      <a class="nav-contact-sm" href="#contact">Contact</a>
+      <button class="menu-btn" id="menu-open" aria-haspopup="dialog" aria-controls="menu">
+        Menu
+      </button>
+    </div>
+  </div>
+</header>
+
+<dialog class="menu" id="menu" aria-label="Site menu">
+  <div class="menu-inner">
+    <button class="menu-close mono" id="menu-close">Close</button>
+    <nav class="menu-nav" aria-label="Menu">
+      {links.map((l, i) => (
+        <a class="menu-link" href={l.href} style={`--i:${i}`}>{l.label}</a>
+      ))}
+      <a class="menu-link menu-link-contact" href="#contact" style="--i:3">Contact</a>
+    </nav>
+    <p class="mono menu-foot">Belgrade · Worldwide</p>
+  </div>
+</dialog>
+
+<style>
+  .nav {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: var(--z-nav);
+    padding-block: var(--s-3);
+    transition: background var(--dur-med) var(--ease-out-quint);
+  }
+
+  .nav.scrolled {
+    background: oklch(14% 0.012 288 / 0.86);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+  }
+
+  .lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    color: var(--ink);
+    padding-block: var(--s-2);
+    margin-block: calc(-1 * var(--s-2));
+  }
+
+  .lockup:hover { color: var(--ink); }
+
+  .lockup-word {
+    font-weight: 680;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    font-variation-settings: 'wdth' 110;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: clamp(var(--s-5), 3vw, var(--s-7));
+  }
+
+  .nav-link {
+    color: var(--ink-2);
+    font-size: 0.95rem;
+    font-weight: 520;
+    padding: var(--s-2) 0;
+    position: relative;
+    transition: color var(--dur-fast) var(--ease-out-quint);
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--mint);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-med) var(--ease-out-quint);
+  }
+
+  .nav-link:hover { color: var(--ink); }
+  .nav-link:hover::after { transform: scaleX(1); }
+
+  /* current section: the underline stays lit */
+  .nav-link.active { color: var(--ink); }
+  .nav-link.active::after { transform: scaleX(1); }
+
+  .nav-cta { display: flex; align-items: center; gap: var(--s-4); }
+
+  /* Ghost at the top — the hero owns the only solid mint.
+     Fills once the hero CTA scrolls away (The One Signal Rule). */
+  .nav-btn {
+    min-height: 2.6rem;
+    padding: 0 var(--s-5);
+    font-size: 0.95rem;
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+    box-shadow: none;
+  }
+
+  .nav-btn:hover {
+    background: transparent;
+    color: var(--mint);
+    border-color: var(--mint);
+    transform: none;
+    box-shadow: none;
+  }
+
+  .nav.scrolled .nav-btn {
+    background: var(--mint);
+    color: var(--night-0);
+    border-color: transparent;
+  }
+
+  .nav.scrolled .nav-btn:hover {
+    background: var(--mint-bright);
+    color: var(--night-0);
+  }
+
+  .menu-btn {
+    display: none;
+    min-height: 44px;
+    padding: var(--s-2) var(--s-3);
+    color: var(--ink);
+    font-weight: 560;
+  }
+
+  /* compact contact affordance for small screens — ghost at the top,
+     mint once the hero CTA has scrolled away, same beat as .nav-btn */
+  .nav-contact-sm {
+    display: none;
+    align-items: center;
+    min-height: 44px;
+    padding: var(--s-2) var(--s-3);
+    color: var(--ink);
+    font-weight: 560;
+    font-size: 0.95rem;
+    transition: color var(--dur-fast) var(--ease-out-quint);
+  }
+
+  .nav.scrolled .nav-contact-sm { color: var(--mint); }
+
+  /* ---- Full-screen menu ---- */
+  .menu {
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    border: none;
+    padding: 0;
+    background: var(--night-0);
+    color: var(--ink);
+  }
+
+  .menu::backdrop { background: transparent; }
+
+  .menu-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: var(--s-5) var(--gutter) var(--s-7);
+  }
+
+  .menu-close {
+    align-self: flex-end;
+    min-height: 44px;
+    padding: var(--s-2) var(--s-3);
+    color: var(--ink);
+  }
+
+  .menu-nav {
+    margin-block: auto 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-link {
+    color: var(--ink);
+    font-size: clamp(2.2rem, 9vw, 3.4rem);
+    font-weight: 720;
+    font-variation-settings: 'wdth' 114;
+    letter-spacing: -0.02em;
+    line-height: 1.35;
+    padding-block: var(--s-2);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .menu-link-contact { color: var(--mint); }
+
+  .menu[open] .menu-link {
+    animation: menu-in 480ms var(--ease-out-quint) both;
+    animation-delay: calc(var(--i, 0) * 60ms);
+  }
+
+  @keyframes menu-in {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .menu-foot { margin-top: var(--s-7); }
+
+  @media (max-width: 860px) {
+    .nav-links, .nav-btn { display: none; }
+    .menu-btn { display: inline-flex; }
+    .nav-contact-sm { display: inline-flex; }
+  }
+
+  @media (min-width: 861px) {
+    .menu { display: none; }
+  }
+</style>
+
+<script>
+  const nav = document.getElementById('site-nav')!;
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      nav.classList.toggle('scrolled', window.scrollY > 24);
+      ticking = false;
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const menu = document.getElementById('menu') as HTMLDialogElement;
+  const openBtn = document.getElementById('menu-open')!;
+  const closeBtn = document.getElementById('menu-close')!;
+  openBtn.addEventListener('click', () => menu.showModal());
+  closeBtn.addEventListener('click', () => menu.close());
+  menu.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => menu.close())
+  );
+
+  /* "You are here": light the nav link of the section holding the
+     viewport's midline. Observer-based, so it works with reduced motion too. */
+  const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.nav-link'));
+  const byId = new Map(navLinks.map((l) => [l.getAttribute('href')!.slice(1), l]));
+  const setActive = (id: string) => {
+    navLinks.forEach((l) => {
+      const on = l === byId.get(id);
+      l.classList.toggle('active', on);
+      if (on) l.setAttribute('aria-current', 'true');
+      else l.removeAttribute('aria-current');
+    });
+  };
+  const watched = ['top', 'services', 'approach', 'about', 'contact']
+    .map((id) => document.getElementById(id))
+    .filter((s): s is HTMLElement => s !== null);
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) setActive(e.target.id);
+      });
+    },
+    { rootMargin: '-45% 0px -54% 0px' }
+  );
+  watched.forEach((s) => io.observe(s));
+</script>
